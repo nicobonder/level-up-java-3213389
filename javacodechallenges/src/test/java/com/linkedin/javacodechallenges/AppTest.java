@@ -21,7 +21,7 @@ public class AppTest {
 
     @Test
     public void isPasswordComplex_false() {
-        assertFalse(App.isPasswordComplex("12aB "));
+        assertFalse(App.isPasswordComplex("12aB"));
         assertFalse(App.isPasswordComplex("Ab112"));
         assertFalse(App.isPasswordComplex("happy"));
         assertFalse(App.isPasswordComplex("happy_1"));
