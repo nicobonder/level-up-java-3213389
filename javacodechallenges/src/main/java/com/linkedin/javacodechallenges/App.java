@@ -14,7 +14,20 @@ public class App {
             Map.entry('Z', 10));
 
     public static int wordScoreCalculator(String word) {
-        return 0;
+        //crear un acumular int
+        //separar las letras de la palabra
+        //crear una list con las letras de la palabra
+        //recorrer la lista y buscar el valor que tiene el caracter en la lista
+        //sumar ese valor al acumulador
+
+        int accumulatedValue = 0;
+        char[] characthers = word.toUpperCase().toCharArray();
+        for(char charact:characthers) {
+               System.out.println(" suma " + letterPoints.getOrDefault(charact, 0));
+                accumulatedValue += letterPoints.getOrDefault(charact,0);
+        }
+        
+        return accumulatedValue;
     }
 
     public static void main(String[] args) {
