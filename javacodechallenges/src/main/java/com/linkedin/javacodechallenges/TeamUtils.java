@@ -2,6 +2,7 @@ package com.linkedin.javacodechallenges;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.NavigableSet;
 import java.util.Random;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
@@ -19,44 +20,40 @@ public class TeamUtils {
   }
 
   public static void revealResults(List<Team> teams) {
-
-    if (teams.size() == 0 || teams.stream()
-        .allMatch(team -> team.getScores().isEmpty())) {
-      System.out.println("The game hasn't started yet.");
+    // TODO: IMPLEMENT THE SOLUCION HERE
+    if (teams.size() == 0 || teams.stream().allMatch(team -> team.getScores().isEmpty())) {
+      System.out.println("The game has not started yet");
       return;
     }
 
-    TreeMap<Integer, List<Team>> scoreTeamsMap = teams.stream()
+    // Agrupa los teams por puntaje, de esa forma es mas facil saber quien está
+    // primero y ver si hay un empate
+    TreeMap<Integer, List<Team>> scoreTeamMap = teams.stream()
         .collect(Collectors.groupingBy(Team::sumTotalScore,
             TreeMap::new, Collectors.toList()));
-    Iterator<Integer> scoreResultsIterator = scoreTeamsMap.descendingKeySet()
-        .stream()
-        .iterator();
 
-    System.out.println("Now for the results, the WINNER is...");
-    announceResult(scoreResultsIterator.next(), scoreTeamsMap);
+    // Despues hay que ordenarlos
+    NavigableSet<Integer> descendingScores = scoreTeamMap.descendingKeySet();
+    Iterator<Integer> teamsResultsIterator = descendingScores.iterator();
 
-    while (scoreResultsIterator.hasNext()) {
-      System.out.println("Then we have... ");
-      announceResult(scoreResultsIterator.next(), scoreTeamsMap);
+    System.out.println("The winner is: ");
+    announceResult(teamsResultsIterator.next(), scoreTeamMap);
+
+    while (teamsResultsIterator.hasNext()) {
+      System.out.println("then we have...");
+      announceResult(teamsResultsIterator.next(), scoreTeamMap);
     }
   }
 
-  private static void announceResult(int score,
-      TreeMap<Integer, List<Team>> scoreTeamsMap) {
-
-    List<Team> playersWithScore = scoreTeamsMap.get(score);
+  private static void announceResult(int score, TreeMap<Integer, List<Team>> scoreTeamMap) {
+    List<Team> playersWithScore = scoreTeamMap.get(score);
 
     if (playersWithScore.size() > 1) {
-      System.out.println("It's a TIE!");
+      System.out.println("It is a tie!");
     }
-
-    playersWithScore
-        .forEach(team -> System.out.println("With " + score +
-            " points, it's team " + team.getPlayer1() + " and " +
-            team.getPlayer2() + "!"));
+    playersWithScore.forEach(team -> System.out.println("With " + score +
+        " points, it is team " + team.getPlayer1() + " and " + team.getPlayer2() + "!"));
 
     System.out.println();
   }
-
 }
